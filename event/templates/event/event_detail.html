@@ -1,0 +1,14 @@
+{% extends 'event/base.html' %}
+
+{% block content %}
+<a class="btn btn-info" href="{% url 'event:player_new' pk=event.pk %}">参加者追加</a>
+<a class="btn btn-info" href="{% url 'event:result_new' pk=event.pk %}">成績</a>
+<h1>{{ event.title }}</h1>
+<p>{{ request.build_absolute_uri }}</p>
+<hr>
+{% for player in player_list %}
+    <span>{{ player.name }}</span>
+{% endfor %}
+
+<hr>
+{% endblock %}

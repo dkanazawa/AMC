@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap 4 -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+
+    <!-- XDSoft DateTimePicker -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css" integrity="sha256-DOS9W6NR+NFe1fUhEE0PGKY/fubbUCnOfTje2JMDw3Y=" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js" integrity="sha256-FEqEelWI3WouFOo2VWP/uJfs1y8KJ++FLh2Lbqc8SJk=" crossorigin="anonymous"></script>
+
+    <title>ELSIMATE EL-S442</title>
+</head>
+<body>
+
+    {% block content_parent %}
+    {% endblock %}
+
+    <script>
+        $(function () {
+            $("#id_start_at").datetimepicker({
+                format: 'Y-m-d H:i',
+                step: 30
+            });
+        });
+<!--      $(function () {-->
+<!--          // datepicker-->
+<!--          let dateFormat = 'yy-mm-dd';-->
+<!--          $('#id_start_at_0').datepicker({-->
+<!--              dateFormat: dateFormat-->
+<!--          });-->
+
+<!--          // timedropper-->
+<!--          $("#id_start_at_1").timeDropper({-->
+<!--              format: "H:mm",-->
+<!--              setCurrentTime: false,-->
+<!--          });-->
+<!--      });-->
+    </script>
+
+</body>
+</html>

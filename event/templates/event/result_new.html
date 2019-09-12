@@ -1,0 +1,34 @@
+{% extends 'event/base.html' %}
+
+{% block content %}
+<form method="POST" enctype="multipart/form-data" class="post-form">{% csrf_token %}
+    {{ form.non_field_errors }}
+    <table class="table table-striped">
+        <thead>
+            <td>loc</td>
+            <td>name</td>
+            <td>pt</td>
+        </thead>
+        <tbody>
+            <tr>
+                <th>A</th>
+                <td>{{ form.p1 }}</td>
+                <td>{{ form.point_p1 }}</td>
+            </tr>
+            <tr>
+                <th>B</th>
+                <td>{{ form.p2 }}</td>
+                <td>{{ form.point_p2 }}</td>
+            <tr>
+                <th>C</th>
+                <td>{{ form.p3 }}</td>
+                <td>{{ form.point_p3 }}</td>
+            <tr>
+                <th>D</th>
+                <td>{{ form.p4 }}</td>
+                <td>{{ form.point_p4 }}</td>
+        </tbody>
+    </table>
+    <button type="submit" class="save btn btn-primary">結果登録</button>
+</form>
+{% endblock %}
