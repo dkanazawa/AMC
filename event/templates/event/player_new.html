@@ -1,8 +1,10 @@
 {% extends 'event/base.html' %}
 
 {% block content %}
+<div class="event">
     <form method="POST" class="post-form">{% csrf_token %}
         {{ form.as_p }}
         <button type="submit" name="register" class="save btn btn-primary">参加登録</button>
     </form>
+</div>
 {% endblock %}

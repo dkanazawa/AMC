@@ -1,3 +1,4 @@
+import numpy as np
 from django import forms
 from .models import Event, Player, Result
 
@@ -39,11 +40,24 @@ class ResultForm(forms.Form):
     point_p3 = forms.IntegerField(max_value=100000, min_value=-100000)
     point_p4 = forms.IntegerField(max_value=100000, min_value=-100000)
 
+    event = None
+
     def __init__(self, queryset=None, *args, **kwargs):
-        event = kwargs.pop('event')
+        self.event = kwargs.pop('event')
         super(ResultForm, self).__init__(*args, **kwargs)
-        qs = Player.objects.filter(event=event)
+        qs = Player.objects.filter(event=self.event)
         self.fields['p1'].queryset = qs
         self.fields['p2'].queryset = qs
         self.fields['p3'].queryset = qs
         self.fields['p4'].queryset = qs
+
+    def clean(self):
+        cleaned_data = super().clean()
+        # distinct players check
+        if len({cleaned_data[i] for i in ['p1', 'p2', 'p3', 'p4']}) < 4:
+            raise forms.ValidationError('Duplicate player')
+        # point total check
+        diff = sum([cleaned_data[i] for i in ['point_p1', 'point_p2', 'point_p3', 'point_p4']]) - self.event.point_at_start * self.event.players
+        if diff != 0:
+            raise forms.ValidationError('Sum of points is incorrect.(' + str(diff) + ')')
+        return cleaned_data

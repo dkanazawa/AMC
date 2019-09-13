@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+import socket
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -23,9 +24,43 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '*ls&1k)qccguq_q30luz$8te(2_c0e4os#qf-^!4m+a**6tczk'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
+if socket.gethostname() in ['jmdc-sas16', 'DESKTOP-4CS4DCC']:
+    DEBUG = True
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+            #'ENGINE': 'django.db.backends.mysql',
+            #'NAME': 'jmdc_evmnge',
+            #'USER': 'dkanazawa',
+            #'PASSWORD': '11adjt1d',
+            #'HOST': '192.168.107.10'
+        }
+    }
+    ALLOWED_HOSTS = ['localhost',
+                     '192.168.107.9',]
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+    SLACK_BACKEND = 'django_slack.backends.ConsoleBackend'  # DEBUG = True のとき有効にすること
+    # SLACK_BACKEND = "django_slack.backends.UrllibBackend"
+else:
+    DEBUG = False
+    DATABASES = {
+        'default': {
+            # 'ENGINE': 'django.db.backends.sqlite3',
+            # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'jmdc_evmnge',
+            'USER': 'dkanazawa',
+            'PASSWORD': '_7_y*E2._Ni&',
+            'HOST': 'localhost'
+        }
+    }
+    ALLOWED_HOSTS = [
+        '172.26.0.218',
+        '18.182.209.113',
+        'kanazawa.jmdc.io',
+    ]
+    STATIC_ROOT = '/usr/share/nginx/html/static'
 
 
 # Application definition
@@ -119,3 +154,26 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "static"),
+)
+
+# Debug settings
+if DEBUG:
+    INTERNAL_IPS = ['127.0.0.1']
+    INSTALLED_APPS += ['debug_toolbar']
+    MIDDLEWARE += ['debug_toolbar.middleware.DebugToolbarMiddleware']
+    DEBUG_TOOLBAR_PANELS = [
+        'debug_toolbar.panels.versions.VersionsPanel',
+        'debug_toolbar.panels.timer.TimerPanel',
+        'debug_toolbar.panels.settings.SettingsPanel',
+        'debug_toolbar.panels.headers.HeadersPanel',
+        'debug_toolbar.panels.request.RequestPanel',
+        'debug_toolbar.panels.sql.SQLPanel',
+        'debug_toolbar.panels.staticfiles.StaticFilesPanel',
+        'debug_toolbar.panels.templates.TemplatesPanel',
+        'debug_toolbar.panels.cache.CachePanel',
+        'debug_toolbar.panels.signals.SignalsPanel',
+        'debug_toolbar.panels.logging.LoggingPanel',
+        'debug_toolbar.panels.redirects.RedirectsPanel',
+    ]

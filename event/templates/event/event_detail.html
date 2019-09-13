@@ -1,14 +1,53 @@
 {% extends 'event/base.html' %}
 
 {% block content %}
-<a class="btn btn-info" href="{% url 'event:player_new' pk=event.pk %}">参加者追加</a>
-<a class="btn btn-info" href="{% url 'event:result_new' pk=event.pk %}">成績</a>
-<h1>{{ event.title }}</h1>
-<p>{{ request.build_absolute_uri }}</p>
-<hr>
-{% for player in player_list %}
-    <span>{{ player.name }}</span>
-{% endfor %}
+<div class="event">
+    <a class="btn btn-info" href="{% url 'event:player_new' pk=event.pk %}">参加者追加</a>
+    <a class="btn btn-info" href="{% url 'event:result_new' pk=event.pk %}">成績を記録</a>
+    <h1>{{ event.title }}</h1>
+    <p>{{ request.build_absolute_uri }}</p>
+    <hr>
+    {% for player in player_list %}
+    <span class="player">{{ player.name }}</span>
+    {% endfor %}
+    <hr>
+    <table class="table table-striped">
+        <thead>
+        <td>内訳</td>
+        {% for column in result_total.columns %}
+        <td>{{ column }}</td>
+        {% endfor %}
+        </thead>
+        <tbody>
+        {% for index, row in result_total.iterrows %}
+        <tr>
+            <th>{{ index }}</th>
+            {% for item in row %}
+            <td>{{ item|floatformat }}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 
-<hr>
+    <hr>
+    <table class="table table-striped">
+        <thead>
+        <td>Index</td>
+        {% for column in result_summary.columns %}
+        <td>{{ column }}</td>
+        {% endfor %}
+        </thead>
+        <tbody>
+        {% for index, row in result_summary.iterrows %}
+        <tr>
+            <th>{{ index }}</th>
+            {% for item in row %}
+            <td>{% if item != 'nan ( nan )' %} {{ item }} {% endif %}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock %}

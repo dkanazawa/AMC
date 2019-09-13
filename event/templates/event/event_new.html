@@ -1,6 +1,7 @@
 {% extends 'event/base.html' %}
 
 {% block content %}
+<div class="event">
     <h3>イベントの新規作成</h3>
     <form method="POST" class="post-form">{% csrf_token %}
         {{ form.non_field_errors }}
@@ -16,4 +17,5 @@
         {% endfor %}
         <button type="submit" class="save btn btn-primary">作成</button>
     </form>
+</div>
 {% endblock %}
