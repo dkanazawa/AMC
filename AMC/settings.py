@@ -30,11 +30,6 @@ if socket.gethostname() in ['jmdc-sas16', 'DESKTOP-4CS4DCC']:
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-            #'ENGINE': 'django.db.backends.mysql',
-            #'NAME': 'jmdc_evmnge',
-            #'USER': 'dkanazawa',
-            #'PASSWORD': '11adjt1d',
-            #'HOST': '192.168.107.10'
         }
     }
     ALLOWED_HOSTS = ['localhost',
@@ -43,22 +38,20 @@ if socket.gethostname() in ['jmdc-sas16', 'DESKTOP-4CS4DCC']:
     SLACK_BACKEND = 'django_slack.backends.ConsoleBackend'  # DEBUG = True のとき有効にすること
     # SLACK_BACKEND = "django_slack.backends.UrllibBackend"
 else:
-    DEBUG = False
+    DEBUG = True
     DATABASES = {
         'default': {
             # 'ENGINE': 'django.db.backends.sqlite3',
             # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-            'ENGINE': 'django.db.backends.mysql',
-            'NAME': 'jmdc_evmnge',
-            'USER': 'dkanazawa',
-            'PASSWORD': '_7_y*E2._Ni&',
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'mahjong',
+            'USER': 'mahjong',
+            'PASSWORD': 'mahjong_daisuki',
             'HOST': 'localhost'
         }
     }
     ALLOWED_HOSTS = [
-        '172.26.0.218',
-        '18.182.209.113',
-        'kanazawa.jmdc.io',
+        '35.222.28.38',
     ]
     STATIC_ROOT = '/usr/share/nginx/html/static'
 
@@ -104,17 +97,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'AMC.wsgi.application'
-
-
-# Database
-# https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
 
 
 # Password validation
