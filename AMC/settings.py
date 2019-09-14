@@ -38,7 +38,7 @@ if socket.gethostname() in ['jmdc-sas16', 'DESKTOP-4CS4DCC']:
     SLACK_BACKEND = 'django_slack.backends.ConsoleBackend'  # DEBUG = True のとき有効にすること
     # SLACK_BACKEND = "django_slack.backends.UrllibBackend"
 else:
-    DEBUG = True
+    DEBUG = False
     DATABASES = {
         'default': {
             # 'ENGINE': 'django.db.backends.sqlite3',
