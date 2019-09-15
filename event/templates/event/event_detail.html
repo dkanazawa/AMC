@@ -7,6 +7,7 @@
     <h1>{{ event.title }}</h1>
     <p>{{ request.build_absolute_uri }}</p>
     <hr>
+    <h4>参加者</h4>
     {% for player in player_list %}
     <span class="player">
         <a href="{% url 'event:player_edit' event_pk=event.pk pk=player.pk %}">{{ player.name }}</a>
@@ -14,7 +15,8 @@
 
     {% endfor %}
     <hr>
-    {% if result_summary %}
+    <h4>成績サマリー</h4>
+    {% if not result_summary.empty %}
     <table class="table table-striped">
         <thead>
         <td>内訳</td>
@@ -35,6 +37,7 @@
     </table>
 
     <hr>
+    <h4>すべての結果</h4>
     <table class="table table-striped">
         <thead>
         {% for column in result_summary.columns %}

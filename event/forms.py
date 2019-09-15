@@ -6,9 +6,15 @@ from .models import Event, Player, Result
 class EventForm(forms.ModelForm):
     """イベントフォーム"""
 
+    start_date = forms.DateTimeField(label='開催日時',
+                                     widget=forms.DateTimeInput(attrs={'autocomplete': 'off'}))
+
     class Meta:
         model = Event
         fields = '__all__'
+        widget = {
+            'start_date': forms.DateTimeInput(attrs={'autocomplete': 'off'})
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -57,13 +63,39 @@ class ResultForm(forms.Form):
         self.fields['p3'].queryset = qs
         self.fields['p4'].queryset = qs
 
+    def clean_point_p1(self):
+        point_p1 = self.cleaned_data['point_p1']
+        if point_p1 % 100 != 0:
+            raise forms.ValidationError('点数は100点単位で入力してください。')
+        return point_p1
+
+    def clean_point_p2(self):
+        point_p2 = self.cleaned_data['point_p2']
+        if point_p2 % 100 != 0:
+            raise forms.ValidationError('点数は100点単位で入力してください。')
+        return point_p2
+
+    def clean_point_p3(self):
+        point_p3 = self.cleaned_data['point_p3']
+        if point_p3 % 100 != 0:
+            raise forms.ValidationError('点数は100点単位で入力してください。')
+        return point_p3
+
+    def clean_point_p4(self):
+        point_p4 = self.cleaned_data['point_p4']
+        if point_p4 % 100 != 0:
+            raise forms.ValidationError('点数は100点単位で入力してください。')
+        return point_p4
+
     def clean(self):
         cleaned_data = super().clean()
         # distinct players check
         if len({cleaned_data[i] for i in ['p1', 'p2', 'p3', 'p4']}) < 4:
             raise forms.ValidationError('Duplicate player')
         # point total check
-        diff = sum([cleaned_data[i] for i in ['point_p1', 'point_p2', 'point_p3', 'point_p4']]) - self.event.point_at_start * self.event.players
-        if diff != 0:
-            raise forms.ValidationError('Sum of points is incorrect.(' + str(diff) + ')')
+        if cleaned_data.get('point_p1') and cleaned_data.get('point_p2') and \
+                cleaned_data.get('point_p3') and cleaned_data.get('point_p4'):
+            diff = sum([cleaned_data[i] for i in ['point_p1', 'point_p2', 'point_p3', 'point_p4']]) - self.event.point_at_start * self.event.players
+            if diff != 0:
+                raise forms.ValidationError('Sum of points is incorrect.(' + str(diff) + ')')
         return cleaned_data

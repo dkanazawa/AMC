@@ -4,32 +4,46 @@
 <div class="event">
     <form method="POST" enctype="multipart/form-data" class="post-form">{% csrf_token %}
         {{ form.non_field_errors }}
+<!--        {% if form.errors %}-->
+<!--        <div class="errorlist">-->
+<!--            {% for errors in form.errors.values %}-->
+<!--                {% for error in errors %}-->
+<!--                    {{ error }}<br>-->
+<!--                {% endfor %}-->
+<!--            {% endfor %}-->
+<!--        </div>-->
+<!--        {% endif %}-->
         <table class="table table-striped">
             <thead>
-                <td>loc</td>
-                <td>name</td>
-                <td>pt</td>
+                <td>開始時風</td>
+                <td>参加者</td>
+                <td>点数</td>
+                <td></td>
             </thead>
             <tbody>
                 <tr>
-                    <th>A</th>
+                    <th>東家（起家）</th>
                     <td>{{ form.p1 }}</td>
                     <td>{{ form.point_p1 }}</td>
+                    <td>{{ form.point_p1.errors }}</td>
                 </tr>
                 <tr>
-                    <th>B</th>
+                    <th>南家</th>
                     <td>{{ form.p2 }}</td>
                     <td>{{ form.point_p2 }}</td>
+                    <td>{{ form.point_p2.errors }}</td>
                 </tr>
                 <tr>
-                    <th>C</th>
+                    <th>西家</th>
                     <td>{{ form.p3 }}</td>
                     <td>{{ form.point_p3 }}</td>
+                    <td>{{ form.point_p3.errors }}</td>
                 </tr>
                 <tr>
-                    <th>D</th>
+                    <th>北家</th>
                     <td>{{ form.p4 }}</td>
                     <td>{{ form.point_p4 }}</td>
+                    <td>{{ form.point_p4.errors }}</td>
                 </tr>
             </tbody>
         </table>

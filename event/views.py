@@ -52,6 +52,9 @@ class EventNew(generic.CreateView):
 
     def form_valid(self, form):
         event = form.save(commit=False)
+        # default event name
+        if event.title is None:
+            event.title = str(event.start_date) + "の麻雀大会"
         event.save()
         return redirect('event:event_detail', pk=event.pk)
 
@@ -81,8 +84,8 @@ class EventDetail(generic.DetailView):
             result_total['total'] = result_total['normal'] + result_total['uma']
             result_total = result_total.T
         else:
-            result_summary = None
-            result_total = None
+            result_summary = pd.DataFrame(index=[], columns=[])
+            result_total = pd.DataFrame(index=[], columns=[])
         context['result_summary'] = result_summary
         context['result_total'] = result_total
         return context
