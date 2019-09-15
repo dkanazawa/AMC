@@ -154,6 +154,7 @@ class ResultNew(generic.FormView):
                                      form.cleaned_data['point_p3'],
                                      form.cleaned_data['point_p4']]
                             })
+        # column名indexに入っているのは最初の席順（起家=0）
         df = df.reset_index().sort_values(by=["point", "index"], ascending=[False, True])
         # uma
         uki_n = df.query("point >= 30000").shape[0]
@@ -187,6 +188,9 @@ class ResultNew(generic.FormView):
             pt_round_func = (lambda x: np.floor((x + 400) / 1000) - 30)
 
         df = df.assign(rank=[1, 2, 3, 4], pt=pt_round_func(df["point"]), pt_uma=pt_uma)
+        # Top pt recalc
+        df = df.reset_index(drop=True)
+        df.loc[0, 'pt'] = -sum(df.loc[1:3, 'pt'])
         for index, item in df.iterrows():
             Result.objects.create(game=game,
                                   player=item['player'],
