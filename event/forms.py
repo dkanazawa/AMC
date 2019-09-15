@@ -29,6 +29,12 @@ class PlayerForm(forms.ModelForm):
             field.widget.attrs['class'] = 'form-control'
 
 
+class PlayerEditForm(PlayerForm):
+
+    class Meta(PlayerForm.Meta):
+        exclude = ('event', )
+
+
 class ResultForm(forms.Form):
 
     p1 = forms.ModelChoiceField(label="参加者", queryset=None)

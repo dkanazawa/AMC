@@ -1,0 +1,8 @@
+{% extends 'event/base.html' %}
+
+{% block content %}
+    <h3>結果の削除</h3>
+    <form method="POST" class="post-form">{% csrf_token %}
+        <button type="submit" class="save btn btn-danger">結果を削除する</button>
+    </form>
+{% endblock %}

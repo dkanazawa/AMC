@@ -8,9 +8,13 @@
     <p>{{ request.build_absolute_uri }}</p>
     <hr>
     {% for player in player_list %}
-    <span class="player">{{ player.name }}</span>
+    <span class="player">
+        <a href="{% url 'event:player_edit' event_pk=event.pk pk=player.pk %}">{{ player.name }}</a>
+    </span>
+
     {% endfor %}
     <hr>
+    {% if result_summary %}
     <table class="table table-striped">
         <thead>
         <td>内訳</td>
@@ -33,21 +37,22 @@
     <hr>
     <table class="table table-striped">
         <thead>
-        <td>Index</td>
         {% for column in result_summary.columns %}
         <td>{{ column }}</td>
         {% endfor %}
+        <td>結果の削除</td>
         </thead>
         <tbody>
         {% for index, row in result_summary.iterrows %}
         <tr>
-            <th>{{ index }}</th>
             {% for item in row %}
             <td>{% if item != 'nan ( nan )' %} {{ item }} {% endif %}</td>
             {% endfor %}
+            <th><a href="{% url 'event:game_delete' event_pk=event.pk pk=index %}">この結果を削除する</a></th>
         </tr>
         {% endfor %}
         </tbody>
     </table>
+    {% endif %}
 </div>
 {% endblock %}

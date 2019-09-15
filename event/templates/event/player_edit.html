@@ -1,0 +1,11 @@
+{% extends 'event/base.html' %}
+
+{% block content %}
+<div class="event">
+    <form method="POST" class="post-form">{% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" name="register" class="save btn btn-primary">参加名修正</button>
+        <a class="btn btn-secondary" href="{% url 'event:event_detail' pk=event_pk %}">戻る</a>
+    </form>
+</div>
+{% endblock %}

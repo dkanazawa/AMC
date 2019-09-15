@@ -5,7 +5,7 @@ from django.shortcuts import redirect, resolve_url, render
 from django.utils import timezone
 from django.views import generic
 from .models import Event, Player, Game, Result
-from .forms import EventForm, PlayerForm, ResultForm
+from .forms import EventForm, PlayerForm, PlayerEditForm, ResultForm
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidden
 
 
@@ -98,10 +98,31 @@ class PlayerNew(generic.CreateView):
         self.event = Event.objects.get(pk=self.kwargs['pk'])
         return {'event': self.event}
 
+    def get_context_data(self, **kwargs):
+        context = super(PlayerNew, self).get_context_data(**kwargs)
+        context['event'] = self.event
+        return context
+
     def form_valid(self, form):
         player = form.save(commit=False)
         player.save()
         return redirect('event:event_detail', pk=self.kwargs['pk'])
+
+
+class PlayerEdit(generic.UpdateView):
+    model = Player
+    template_name = 'event/player_edit.html'
+    form_class = PlayerEditForm
+
+    def get_context_data(self, **kwargs):
+        context = super(PlayerEdit, self).get_context_data(**kwargs)
+        context['event_pk'] = self.kwargs['event_pk']
+        return context
+
+    def form_valid(self, form):
+        player = form.save(commit=False)
+        player.save()
+        return redirect('event:event_detail', pk=self.kwargs['event_pk'])
 
 
 class ResultNew(generic.FormView):
@@ -114,6 +135,11 @@ class ResultNew(generic.FormView):
         self.event = Event.objects.get(pk=self.kwargs['pk'])
         kwargs['event'] = self.event
         return kwargs
+
+    def get_context_data(self, **kwargs):
+        context = super(ResultNew, self).get_context_data(**kwargs)
+        context['event'] = self.event
+        return context
 
     def form_valid(self, form):
         df = pd.DataFrame({'player': [form.cleaned_data['p1'],
@@ -167,3 +193,11 @@ class ResultNew(generic.FormView):
                                   pt_uma=item['pt_uma']
                                   )
         return redirect('event:event_detail', pk=self.kwargs['pk'])
+
+
+class GameDelete(generic.DeleteView):
+    model = Game
+    template_name = 'event/game_delete_confirm.html'
+
+    def get_success_url(self):
+        return resolve_url('event:event_detail', pk=self.kwargs['event_pk'])

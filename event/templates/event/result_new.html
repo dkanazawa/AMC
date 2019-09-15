@@ -34,6 +34,7 @@
             </tbody>
         </table>
         <button type="submit" class="save btn btn-primary">結果登録</button>
+        <a class="btn btn-secondary" href="{% url 'event:event_detail' pk=event.pk %}">戻る</a>
     </form>
 </div>
 {% endblock %}
