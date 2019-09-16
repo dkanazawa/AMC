@@ -49,7 +49,7 @@
         {% for index, row in result_summary.iterrows %}
         <tr>
             {% for item in row %}
-            <td>{% if item != 'nan ( nan )' %} {{ item }} {% endif %}</td>
+            <td>{% if item != 'nan（nan）' %} {{ item }} {% endif %}</td>
             {% endfor %}
             <th><a href="{% url 'event:game_delete' event_pk=event.pk pk=index %}">この結果を削除する</a></th>
         </tr>

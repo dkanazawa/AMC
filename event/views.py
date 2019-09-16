@@ -77,7 +77,7 @@ class EventDetail(generic.DetailView):
             self.result_df = pd.pivot_table(df, values=["pt", "pt_uma"], index="game", columns="player__name", aggfunc="sum")  # .reorder_levels([1, 0], axis=1)
             self.result_df = pd.concat([self.result_df.xs('pt', level=0, axis=1).assign(pt_type='normal'),
                                         self.result_df.xs('pt_uma', level=0, axis=1).assign(pt_type='uma')])
-            result_summary = self.result_df.drop('pt_type', axis=1).applymap(lambda x: str(int(x)) if not np.isnan(x) else 'nan').groupby(level=0).agg(lambda x: ' ( '.join(x) + ' )')
+            result_summary = self.result_df.drop('pt_type', axis=1).applymap(lambda x: str(int(x)) if not np.isnan(x) else 'nan').groupby(level=0).agg(lambda x: '（'.join(x) + '）')
             # Result Total
             result_total = self.result_df.groupby(by=['pt_type']).sum()
             result_total = result_total.T

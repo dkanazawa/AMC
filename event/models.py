@@ -37,7 +37,7 @@ class Event(models.Model):
     title = models.CharField(verbose_name='イベント名', max_length=50, blank=True, null=True, help_text='※入力任意')
     start_date = models.DateField(verbose_name='開催日')  # カレンダー用
     players = models.PositiveSmallIntegerField(default=4, choices=PLAYERS)
-    point_at_start = models.PositiveSmallIntegerField(verbose_name='配給原点', default=25000, validators=[MinValueValidator(20000), MaxValueValidator(30000)])
+    point_at_start = models.PositiveIntegerField(verbose_name='配給原点', default=25000, validators=[MinValueValidator(20000), MaxValueValidator(30000)])
     rounding_method = models.PositiveSmallIntegerField(verbose_name='端数処理', default=4, choices=ROUNDING)
     uma_method = models.CharField(verbose_name='ウマ計算方法', max_length=2, default='B1', choices=UMA)
 
@@ -67,7 +67,7 @@ class Result(models.Model):
 
     game = models.ForeignKey('Game', on_delete=models.CASCADE)
     player = models.ForeignKey('Player', on_delete=models.CASCADE)
-    point = models.SmallIntegerField(validators=[MinValueValidator(-200000), MaxValueValidator(200000), IntegerUnitValidator(100)])
+    point = models.IntegerField(validators=[MinValueValidator(-200000), MaxValueValidator(200000), IntegerUnitValidator(100)])
     rank = models.PositiveSmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(4)])
     pt = models.SmallIntegerField(validators=[MinValueValidator(-200), MaxValueValidator(200)])
     pt_uma = models.SmallIntegerField()
