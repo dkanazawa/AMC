@@ -14,7 +14,7 @@
 }
 
 .content {
-    margin-left: 40px;
+    margin-left: 10px;
 }
 
 h1, h2, h3, h4 {
@@ -40,13 +40,11 @@ h1, h2, h3, h4 {
 }
 
 .event {
-    margin-bottom: 70px;
-    margin: 10px 10px 10px 10px;
+    margin-bottom: 20px;
     padding: 3px 3px 3px 3px;
 }
 
 .event-table {
-    margin: 10px 10px 10px 10px;
     padding: 3px 3px 3px 3px;
 }
 
@@ -67,6 +65,6 @@ h1, h2, h3, h4 {
 }
 
 .player {
-    margin-right: 10px;
-    margin-left: 10px;
+    margin-right: 5px;
+    margin-left: 5px;
 }

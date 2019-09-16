@@ -43,7 +43,7 @@
         {% for column in result_summary.columns %}
         <td>{{ column }}</td>
         {% endfor %}
-        <td>結果の削除</td>
+        <td></td>
         </thead>
         <tbody>
         {% for index, row in result_summary.iterrows %}
@@ -51,7 +51,9 @@
             {% for item in row %}
             <td>{% if item != 'nan（nan）' %} {{ item }} {% endif %}</td>
             {% endfor %}
-            <th><a href="{% url 'event:game_delete' event_pk=event.pk pk=index %}">この結果を削除する</a></th>
+            <th><a href="{% url 'event:game_delete' event_pk=event.pk pk=index %}">
+                <i class="fas fa-trash-alt"></i>
+            </a></th>
         </tr>
         {% endfor %}
         </tbody>
