@@ -18,8 +18,15 @@ class EventForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.fields['players'].disabled = True
         for field in self.fields.values():
             field.widget.attrs['class'] = 'form-control'
+
+    def clean_point_at_start(self):
+        point_at_start = self.cleaned_data['point_at_start']
+        if point_at_start % 1000 != 0:
+            raise forms.ValidationError('配給原点は1000点単位で入力してください。')
+        return point_at_start
 
 
 class PlayerForm(forms.ModelForm):

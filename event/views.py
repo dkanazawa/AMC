@@ -1,3 +1,4 @@
+import csv
 import pandas as pd
 import numpy as np
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -208,3 +209,24 @@ class GameDelete(generic.DeleteView):
 
     def get_success_url(self):
         return resolve_url('event:event_detail', pk=self.kwargs['event_pk'])
+
+
+def result_export(request, pk):
+    response = HttpResponse(content_type='text/csv', charset='cp932')
+    response['Content-Disposition'] = 'attachment; filename="result.csv"'
+    # Result Summary
+    df = pd.DataFrame.from_records(
+        Result.objects.filter(game__event=pk).values('pt', 'pt_uma', 'game', 'player__name'))
+    if not df.empty:
+        result_df = pd.pivot_table(df, values=["pt", "pt_uma"], index="game", columns="player__name",
+                                        aggfunc="sum")  # .reorder_levels([1, 0], axis=1)
+        result_df.reset_index(inplace=True, drop=True)
+        result_df.index = result_df.index + 1
+        result_df = pd.concat([result_df.xs('pt', level=0, axis=1).assign(pt_type='normal'),
+                               result_df.xs('pt_uma', level=0, axis=1).assign(pt_type='uma')])
+    else:
+        result_df = pd.DataFrame(index=[], columns=[])
+    # for p in Result.objects.filter(game__event__pk=pk).order_by('game').select_related('player'):
+    #     writer.writerow([i, p.player.name, p.participant.first_name, p.participant.email, p.status])
+    result_df.to_csv(path_or_buf=response)
+    return response

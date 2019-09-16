@@ -1,11 +1,21 @@
 {% extends 'event/base.html' %}
+{% load tags %}
 
 {% block content %}
 <div class="event">
     <a class="btn btn-info" href="{% url 'event:player_new' pk=event.pk %}">参加者追加</a>
     <a class="btn btn-info" href="{% url 'event:result_new' pk=event.pk %}">成績を記録</a>
+    {% if not result_summary.empty %}
+    <a class="btn btn-link" href="{% url 'event:result_export' pk=event.pk %}">成績をダウンロード</a>
+    {% endif %}
     <h1>{{ event.title }}</h1>
-    <p>{{ request.build_absolute_uri }}</p>
+    <p>参加者にこのURLを共有：{{ request.build_absolute_uri }}</p>
+    <h4>ルール</h4>
+    <ul>
+        <li>配給原点：{{ event.point_at_start }}</li>
+        <li>端数処理：{{ event.rounding_method|lookup_rounding_method }}</li>
+        <li>ウマ計算：{{ event.uma_method|lookup_uma_method }}</li>
+    </ul>
     <hr>
     <h4>参加者</h4>
     {% for player in player_list %}
