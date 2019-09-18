@@ -173,9 +173,9 @@ class ResultNew(generic.FormView):
             if self.event.uma_method == 'A1':
                 pt_uma = [10, 5, -5, 10]
             elif self.event.uma_method == 'A2':
-                pt_uma = [20, 10, -10, 20]
+                pt_uma = [20, 10, -10, -20]
             elif self.event.uma_method == 'A3':
-                pt_uma = [30, 10, -10, 30]
+                pt_uma = [30, 10, -10, -30]
 
         # game create
         game = Game.objects.create(event=self.event, uma_pattern=uma_pattern)
