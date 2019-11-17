@@ -77,4 +77,5 @@ class Result(models.Model):
     rank = models.PositiveSmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(4)])
     pt = models.SmallIntegerField(validators=[MinValueValidator(-200), MaxValueValidator(200)])
     pt_uma = models.SmallIntegerField()
+    pt_ex = models.SmallIntegerField()
 

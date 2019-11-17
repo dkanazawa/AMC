@@ -18,6 +18,7 @@
                 <td>開始時風</td>
                 <td>参加者</td>
                 <td>点数</td>
+                <td>その他得点(千点単位)</td>
                 <td></td>
             </thead>
             <tbody>
@@ -25,24 +26,28 @@
                     <th>東家（起家）</th>
                     <td>{{ form.p1 }}</td>
                     <td>{{ form.point_p1 }}</td>
+                    <td>{{ form.pt_ex_p1 }}</td>
                     <td>{{ form.point_p1.errors }}</td>
                 </tr>
                 <tr>
                     <th>南家</th>
                     <td>{{ form.p2 }}</td>
                     <td>{{ form.point_p2 }}</td>
+                    <td>{{ form.pt_ex_p2 }}</td>
                     <td>{{ form.point_p2.errors }}</td>
                 </tr>
                 <tr>
                     <th>西家</th>
                     <td>{{ form.p3 }}</td>
                     <td>{{ form.point_p3 }}</td>
+                    <td>{{ form.pt_ex_p3 }}</td>
                     <td>{{ form.point_p3.errors }}</td>
                 </tr>
                 <tr>
                     <th>北家</th>
                     <td>{{ form.p4 }}</td>
                     <td>{{ form.point_p4 }}</td>
+                    <td>{{ form.pt_ex_p4 }}</td>
                     <td>{{ form.point_p4.errors }}</td>
                 </tr>
             </tbody>

@@ -24,7 +24,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '*ls&1k)qccguq_q30luz$8te(2_c0e4os#qf-^!4m+a**6tczk'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-if socket.gethostname() in ['jmdc-sas16', 'DESKTOP-4CS4DCC']:
+if socket.gethostname() in ['jmdc-sas16', 'DESKTOP-4CS4DCC', 'dkanazawa-Home']:
     DEBUG = True
     DATABASES = {
         'default': {
@@ -33,6 +33,7 @@ if socket.gethostname() in ['jmdc-sas16', 'DESKTOP-4CS4DCC']:
         }
     }
     ALLOWED_HOSTS = ['localhost',
+                     '127.0.0.1',
                      '192.168.107.9',]
     MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
     SLACK_BACKEND = 'django_slack.backends.ConsoleBackend'  # DEBUG = True のとき有効にすること

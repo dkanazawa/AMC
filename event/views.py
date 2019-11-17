@@ -73,16 +73,18 @@ class EventDetail(generic.DetailView):
         except Player.DoesNotExist:
             context['player_list'] = None
         # Result Summary
-        df = pd.DataFrame.from_records(Result.objects.filter(game__event=self.kwargs['pk']).values('pt', 'pt_uma', 'game', 'player__name'))
+        df = pd.DataFrame.from_records(Result.objects.filter(game__event=self.kwargs['pk']).values('pt', 'pt_uma', 'pt_ex', 'game', 'player__name'))
         if not df.empty:
-            self.result_df = pd.pivot_table(df, values=["pt", "pt_uma"], index="game", columns="player__name", aggfunc="sum")  # .reorder_levels([1, 0], axis=1)
+            self.result_df = pd.pivot_table(df, values=["pt", "pt_uma", "pt_ex"], index="game", columns="player__name", aggfunc="sum")  # .reorder_levels([1, 0], axis=1)
             self.result_df = pd.concat([self.result_df.xs('pt', level=0, axis=1).assign(pt_type='normal'),
-                                        self.result_df.xs('pt_uma', level=0, axis=1).assign(pt_type='uma')])
+                                        self.result_df.xs('pt_uma', level=0, axis=1).assign(pt_type='uma'),
+                                        self.result_df.xs('pt_ex', level=0, axis=1).assign(pt_type='ex'),
+                                        ])
             result_summary = self.result_df.drop('pt_type', axis=1).applymap(lambda x: str(int(x)) if not np.isnan(x) else 'nan').groupby(level=0).agg(lambda x: '（'.join(x) + '）')
             # Result Total
             result_total = self.result_df.groupby(by=['pt_type']).sum()
             result_total = result_total.T
-            result_total['total'] = result_total['normal'] + result_total['uma']
+            result_total['total'] = result_total['normal'] + result_total['uma'] + result_total['ex']
             result_total = result_total.T
         else:
             result_summary = pd.DataFrame(index=[], columns=[])
@@ -153,8 +155,12 @@ class ResultNew(generic.FormView):
                            'point': [form.cleaned_data['point_p1'],
                                      form.cleaned_data['point_p2'],
                                      form.cleaned_data['point_p3'],
-                                     form.cleaned_data['point_p4']]
-                            })
+                                     form.cleaned_data['point_p4']],
+                           'pt_ex': [form.cleaned_data['pt_ex_p1'],
+                                     form.cleaned_data['pt_ex_p2'],
+                                     form.cleaned_data['pt_ex_p3'],
+                                     form.cleaned_data['pt_ex_p4']]
+                           })
         # column名indexに入っているのは最初の席順（起家=0）
         df = df.reset_index().sort_values(by=["point", "index"], ascending=[False, True])
         # uma
@@ -188,7 +194,7 @@ class ResultNew(generic.FormView):
         elif self.event.rounding_method == 3:     # 5/6
             pt_round_func = (lambda x: np.floor((x + 400) / 1000) - 30)
 
-        df = df.assign(rank=[1, 2, 3, 4], pt=pt_round_func(df["point"]), pt_uma=pt_uma)
+        df = df.assign(rank=[1, 2, 3, 4], pt=pt_round_func(df["point"]), pt_uma=pt_uma, pt_ex=df["pt_ex"])
         # Top pt recalc
         df = df.reset_index(drop=True)
         df.loc[0, 'pt'] = -sum(df.loc[1:3, 'pt'])
@@ -198,7 +204,8 @@ class ResultNew(generic.FormView):
                                   point=item['point'],
                                   rank=item['rank'],
                                   pt=item['pt'],
-                                  pt_uma=item['pt_uma']
+                                  pt_uma=item['pt_uma'],
+                                  pt_ex=item['pt_ex'],
                                   )
         return redirect('event:event_detail', pk=self.kwargs['pk'])
 
