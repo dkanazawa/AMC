@@ -1,59 +1,3 @@
-<<<<<<< HEAD
-{% extends 'event/base.html' %}
-
-{% block content %}
-<div class="event">
-    <form method="POST" enctype="multipart/form-data" class="post-form">{% csrf_token %}
-        {{ form.non_field_errors }}
-<!--        {% if form.errors %}-->
-<!--        <div class="errorlist">-->
-<!--            {% for errors in form.errors.values %}-->
-<!--                {% for error in errors %}-->
-<!--                    {{ error }}<br>-->
-<!--                {% endfor %}-->
-<!--            {% endfor %}-->
-<!--        </div>-->
-<!--        {% endif %}-->
-        <table class="table table-striped">
-            <thead>
-                <td>開始時風</td>
-                <td>参加者</td>
-                <td>点数</td>
-                <td></td>
-            </thead>
-            <tbody>
-                <tr>
-                    <th>東家（起家）</th>
-                    <td>{{ form.p1 }}</td>
-                    <td>{{ form.point_p1 }}</td>
-                    <td>{{ form.point_p1.errors }}</td>
-                </tr>
-                <tr>
-                    <th>南家</th>
-                    <td>{{ form.p2 }}</td>
-                    <td>{{ form.point_p2 }}</td>
-                    <td>{{ form.point_p2.errors }}</td>
-                </tr>
-                <tr>
-                    <th>西家</th>
-                    <td>{{ form.p3 }}</td>
-                    <td>{{ form.point_p3 }}</td>
-                    <td>{{ form.point_p3.errors }}</td>
-                </tr>
-                <tr>
-                    <th>北家</th>
-                    <td>{{ form.p4 }}</td>
-                    <td>{{ form.point_p4 }}</td>
-                    <td>{{ form.point_p4.errors }}</td>
-                </tr>
-            </tbody>
-        </table>
-        <button type="submit" class="save btn btn-primary">結果登録</button>
-        <a class="btn btn-secondary" href="{% url 'event:event_detail' pk=event.pk %}">戻る</a>
-    </form>
-</div>
-{% endblock %}
-=======
 {% extends 'event/base.html' %}
 
 {% block content %}
@@ -113,4 +57,3 @@
     </form>
 </div>
 {% endblock %}
->>>>>>> ae5719ea822061c3bae04b2315ea9690938a9343
