@@ -80,12 +80,16 @@ class EventDetail(generic.DetailView):
                                         self.result_df.xs('pt_uma', level=0, axis=1).assign(pt_type='uma'),
                                         self.result_df.xs('pt_ex', level=0, axis=1).assign(pt_type='ex'),
                                         ])
-            result_summary = self.result_df.drop('pt_type', axis=1).applymap(lambda x: str(int(x)) if not np.isnan(x) else 'nan').groupby(level=0).agg(lambda x: '（'.join(x) + '）')
+            result_summary = self.result_df.drop('pt_type', axis=1).applymap(lambda x: str(int(x)) if not np.isnan(x) else 'nan').groupby(level=0).agg(lambda x: ', '.join(x))
             # Result Total
             result_total = self.result_df.groupby(by=['pt_type']).sum()
             result_total = result_total.T
             result_total['total'] = result_total['normal'] + result_total['uma'] + result_total['ex']
             result_total = result_total.T
+            result_total = result_total.assign(sortkey = lambda x:[1 if i=='normal' else 2 if i=='uma' else 3 if i=='ex' else 4 for i in result_total.index]) \
+                                       .sort_values(by=['sortkey']) \
+                                       .drop(['sortkey'], axis=1)
+            result_total.index = ['素点', 'ウマ', 'その他', '合計']
         else:
             result_summary = pd.DataFrame(index=[], columns=[])
             result_total = pd.DataFrame(index=[], columns=[])
@@ -173,6 +177,8 @@ class ResultNew(generic.FormView):
                 pt_uma = [2, 1, -1, -2]
             elif uki_n == 3:
                 pt_uma = [3, 2, 1, -6]
+            elif uki_n == 0:
+                pt_uma = [0, 0, 0, 0]   # 浮き無の場合はウマ0で登録
             pt_uma = [i * 5 for i in pt_uma]
         else:
             uma_pattern = 0

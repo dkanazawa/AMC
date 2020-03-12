@@ -104,15 +104,11 @@ class ResultForm(forms.Form):
         if len({cleaned_data[i] for i in ['p1', 'p2', 'p3', 'p4']}) < 4:
             raise forms.ValidationError('Duplicate player')
         # point total check
-        if cleaned_data.get('point_p1') and cleaned_data.get('point_p2') and \
-                cleaned_data.get('point_p3') and cleaned_data.get('point_p4'):
-            diff = sum([cleaned_data[i] for i in ['point_p1', 'point_p2', 'point_p3', 'point_p4']]) - self.event.point_at_start * self.event.players
-            if diff != 0:
-                raise forms.ValidationError('Sum of points is incorrect.(' + str(diff) + ')')
+        diff = sum([cleaned_data[i] for i in ['point_p1', 'point_p2', 'point_p3', 'point_p4']]) - self.event.point_at_start * self.event.players
+        if diff != 0:
+            raise forms.ValidationError('Sum of points is incorrect.(' + str(diff) + ')')
         # ex-point total check
-        if cleaned_data.get('pt_ex_p1') and cleaned_data.get('pt_ex_p2') and \
-                cleaned_data.get('pt_ex_p3') and cleaned_data.get('pt_ex_p4'):
-            diff = sum([cleaned_data[i] for i in ['pt_ex_p1', 'pt_ex_p2', 'pt_ex_p3', 'pt_ex_p4']])
-            if diff != 0:
-                raise forms.ValidationError('Sum of ex-points is incorrect.(' + str(diff) + ')')
+        diff = sum([cleaned_data[i] for i in ['pt_ex_p1', 'pt_ex_p2', 'pt_ex_p3', 'pt_ex_p4']])
+        if diff != 0:
+            raise forms.ValidationError('Sum of ex-points is incorrect.(' + str(diff) + ')')
         return cleaned_data
